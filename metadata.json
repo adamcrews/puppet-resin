@@ -1,0 +1,16 @@
+{
+  "name": "adamcrews-resin",
+  "version": "0.0.1",
+  "author": "adamcrews",
+  "summary": "Install and configure the resin 3.x web server.",
+  "license": "Apache 2.0",
+  "source": "https://github.com/adamcrews/puppet-resin",
+  "project_page": "https://github.com/adamcrews/puppet-resin",
+  "issues_url": "https://github.com/adamcrews/puppet-resin/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.2.0"
+    }
+  ]
+}

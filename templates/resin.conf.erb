@@ -1,0 +1,98 @@
+<!--  This file is managed with puppet -->
+
+<resin xmlns="http://caucho.com/ns/resin" xmlns:resin="http://caucho.com/ns/resin/core">
+
+  <class-loader>
+    <tree-loader path="${resin.home}/ext-lib"/>
+    <tree-loader path="${resin.root}/ext-lib"/>
+
+    <tree-loader path="${resin.home}/lib"/>
+    <tree-loader path="${resin.root}/lib"/>
+  </class-loader>
+
+  <stdout-log path='<%= @stdout_log %>' rollover-period='1D' />
+  <stderr-log path='stdout:'/>
+
+  <log name="" path="stdout:" timestamp="[%H:%M:%S.%s]" format=" ${log.level} ${log.loggerName} ${log.message}">
+     <logger name="com.caucho" level="info"/>
+     <logger name="com.caucho.java" level="config"/>
+     <logger name="com.caucho.loader" level="config"/>
+     <logger name="com.aozing" level="all"/>
+  </log>
+
+  <dependency-check-interval><%= @dependency_check_interval %>s</dependency-check-interval>
+
+  <system-property mail.smtp.host="127.0.0.1"/>
+  <system-property mail.smtp.port="25"/>
+
+  <character-encoding>utf-8</character-encoding>
+
+  <javac compiler="internal" args=""/>
+
+
+
+  <cluster id="app-tier">
+  <root-directory><%= @resin_root %></root-directory>
+    <server-default>
+      <http address="<%= @http_address %>" port="<%= @http_port %>"/>
+
+      <jvm-arg>-Xms<%= @java_xms %>m</jvm-arg>   <!-- initial heap size -->
+      <jvm-arg>-Xmx<%= @java_xmx %>m</jvm-arg>   <!-- max heap size -->
+      <jvm-arg>-Xmn<%= @java_xmn %>m</jvm-arg>   <!-- the size of the heap for the young generation -->
+      <jvm-arg>-Xss<%= @java_xss %>k</jvm-arg>   <!-- stack size for each thread -->
+      <jvm-arg>-XX:+CMSClassUnloadingEnabled</jvm-arg>
+      <jvm-arg>-XX:+CMSPermGenSweepingEnabled</jvm-arg>
+      <jvm-arg>-XX:+UseConcMarkSweepGC</jvm-arg>
+      <!--
+      <jvm-arg>-Xdebug</jvm-arg>
+      <jvm-arg>-Dcom.sun.management.jmxremote</jvm-arg>
+      -->
+
+      <watchdog-jvm-arg>-Dcom.sun.management.jmxremote</watchdog-jvm-arg>
+      <watchdog-port>6600</watchdog-port>
+
+      <memory-free-min><%= @memory_free_min %>M</memory-free-min>
+
+      <thread-max><%= @thread_max %></thread-max>
+      <socket-timeout><%= @socket_timeout %>s</socket-timeout>
+      <keepalive-max><%= @keepalive_max %></keepalive-max>
+      <keepalive-timeout><%= @keepalive_timeout %>s</keepalive-timeout>
+
+      <!-- <user-name>root</user-name> -->
+      <!-- <group-name>root</group-name> -->
+    </server-default>
+
+    <server id="" address="127.0.0.1" port="6800"/>
+
+    <web-app-default>
+      <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+      </welcome-file-list>
+
+      <prologue>
+        <class-loader>
+          <tree-loader path="${resin.root}/ext-webapp-lib"/>
+        </class-loader>
+        <allow-servlet-el/>
+      </prologue>
+
+      <session-config>
+        <enable-url-rewriting>false</enable-url-rewriting>
+      </session-config>
+
+    </web-app-default>
+
+    <resin:import path="${resin.home}/conf/app-default.xml"/>
+
+     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+     <host id=''>
+      <web-app id='/' document-directory='<%= @document_directory %>'>
+         <stdout-log path='<%= @stdout_log %>' rollover-period='1D' timestamp="[%Y-%m-%d %H:%M:%S.%s]" />
+         <access-log path="<%= @access_log %>" format='%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"' rollover-period="1D"/>
+      </web-app>
+     </host>
+     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  </cluster>
+
+</resin>
