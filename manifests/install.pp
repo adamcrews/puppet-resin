@@ -9,4 +9,14 @@ class resin::install {
     ensure => $resin::package_ensure,
   }
 
+  file { "${resin::resin_root}/ext-lib":
+    ensure  => directory,
+    owner   => root,
+    group   => root,
+    mode    => '0555',
+    purge   => true,
+    recurse => true,
+    require => Package[$resin::package_name],
+  }
+
 }
