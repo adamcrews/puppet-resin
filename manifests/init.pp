@@ -23,6 +23,7 @@ class resin (
   $document_directory = $resin::params::document_directory,
   $stdout_log         = $resin::params::stdout_log,
   $access_log         = $resin::params::access_log,
+  $extra_log          = undef,
 
   $dependency_check_interval = $resin::params::dependency_check_interval,
   $http_address              = $resin::params::http_address,
