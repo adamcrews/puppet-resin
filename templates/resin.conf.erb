@@ -80,14 +80,11 @@
         <enable-url-rewriting>false</enable-url-rewriting>
       </session-config>
 
-      <!-- protect all .properties files -->
-      <security-constraint>
-        <web-resource-collection>
-          <url-pattern>/.svn/*</url-pattern>
-          <url-pattern>/.git/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint role-name='nobody'/>
-      </security-constraint>
+      <!-- protect all .svn and .git stuff -->
+      <rewrite-dispatch>
+        <not-found regexp="^/.svn"/>
+        <not-found regexp="^/.git"/>
+      </rewrite-dispatch>
 
     </web-app-default>
 
