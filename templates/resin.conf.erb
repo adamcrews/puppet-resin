@@ -80,6 +80,15 @@
         <enable-url-rewriting>false</enable-url-rewriting>
       </session-config>
 
+      <!-- protect all .properties files -->
+      <security-constraint>
+        <web-resource-collection>
+          <url-pattern>/.svn/*</url-pattern>
+          <url-pattern>/.git/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint role-name='nobody'/>
+      </security-constraint>
+
     </web-app-default>
 
     <resin:import path="${resin.home}/conf/app-default.xml"/>
