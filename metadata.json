@@ -1,6 +1,6 @@
 {
   "name": "adamcrews-resin",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "adamcrews",
   "summary": "Install and configure the resin 3.x web server.",
   "license": "Apache 2.0",
