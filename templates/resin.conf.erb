@@ -29,10 +29,11 @@
 
   <javac compiler="internal" args=""/>
 
-
-
   <cluster id="app-tier">
-  <root-directory><%= @resin_root %></root-directory>
+    <!-- Hide what server version we are running -->
+    <server-header>None</server-header>
+
+    <root-directory><%= @resin_root %></root-directory>
     <server-default>
       <http address="<%= @http_address %>" port="<%= @http_port %>"/>
 
@@ -44,8 +45,8 @@
       <jvm-arg>-XX:+CMSPermGenSweepingEnabled</jvm-arg>
       <jvm-arg>-XX:+UseConcMarkSweepGC</jvm-arg>
       <!--
-      <jvm-arg>-Xdebug</jvm-arg>
-      <jvm-arg>-Dcom.sun.management.jmxremote</jvm-arg>
+        <jvm-arg>-Xdebug</jvm-arg>
+        <jvm-arg>-Dcom.sun.management.jmxremote</jvm-arg>
       -->
 
       <watchdog-jvm-arg>-Dcom.sun.management.jmxremote</watchdog-jvm-arg>
@@ -90,15 +91,17 @@
 
     <resin:import path="${resin.home}/conf/app-default.xml"/>
 
-     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-     <host id=''>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <host id=''>
       <web-app id='/' document-directory='<%= @document_directory %>'>
-         <stdout-log path='<%= @stdout_log %>' rollover-period='1D' timestamp="[%Y-%m-%d %H:%M:%S.%s]" />
-<% if @extra_log %>         <%= @extra_log %><% end -%>
-         <access-log path="<%= @access_log %>" format='%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"' rollover-period="1D"/>
+        <stdout-log path='<%= @stdout_log %>' rollover-period='1D' timestamp="[%Y-%m-%d %H:%M:%S.%s]" />
+<% if @extra_log -%>
+        <%= @extra_log %>
+<% end -%>
+        <access-log path="<%= @access_log %>" format='%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"' rollover-period="1D"/>
       </web-app>
-     </host>
-     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </host>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
   </cluster>
 
